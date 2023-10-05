@@ -18,7 +18,8 @@ def extrairExpandir(texto):
     return [texto]
 
 def comparar(q, i)-> bool:
-    palavrasQ = set(q[0].split(" "))
+    #print(type(q))
+    palavrasQ = set(q.split(" "))
     palavrasD = set(i.split(" "))
     #print(q)
     intdq = palavrasD.intersection(palavrasQ)
@@ -26,7 +27,7 @@ def comparar(q, i)-> bool:
     #print()
     #print(len(intdq))
     #exit()
-    if (len(intdq)/len(palavrasQ)) > 0.35:
+    if (len(intdq)/len(palavrasQ)) > 0.4:
         return True
     else:
         return False
@@ -34,7 +35,7 @@ def comparar(q, i)-> bool:
 def buscar(q):
     resultados = []
     for i in enumerate(indice):
-        if comparar(q,i[1]):
+        if comparar(q[0],i[1]):
             resultados.append(i[0])
     return resultados
 
@@ -44,8 +45,9 @@ def rankear(resultados):
 
 indice = list()
 
+
 #arquivo carn
-documentos = lerColecao("cran.all.1400")
+documentos = lerColecao("/home/aluno/Downloads/BRI-main/cran/docs/cran.all.1400")
 print("#docs:",len(documentos),"\n")
 
 antesLixo = timeit.default_timer()
@@ -60,24 +62,22 @@ depoisLixo = timeit.default_timer() - antesLixo
 print("%f" %(depoisLixo),"\n")
 
 #arquivo qry
-qry = lerColecao("cran.qry")
+qry = lerColecao("/home/aluno/Downloads/BRI-main/cran/docs/cran.qry")
 print("#qry:",len(qry),"\n")
 
+listaResultados = []
 for con in qry[1:-1]:
     #print(con)
     consultaLimpa = removerLixo(con)
     #print(consultaLimpa)
     listaConsulta = extrairExpandir(consultaLimpa)
     #print(listaConsulta)
-    listaResultados = []
+    
     resultados = buscar(listaConsulta) # resultados de uma pesquisa
 
-    listaResultados.append(resultados) # resultados de todas as pesquisa
+    listaResultados.extend(resultados) # resultados de todas as pesquisa
 
     rankear(listaResultados)
-
-    print(resultados)
-    break
 
 
 #print("docs:",indice[1])
