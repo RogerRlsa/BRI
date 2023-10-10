@@ -11,37 +11,31 @@ def removerLixo(s):
     return s.replace(".T","").replace(".A","").replace(".B","").replace(".W","")
 
 def addIndice(doc):
-    #doc = doc.split()
     indice.append(doc)
 
 def extrairExpandir(texto):
     return [texto]
 
 def comparar(q, i)-> bool:
-    #print(type(q))
+
     palavrasQ = set(q.split(" "))
     palavrasD = set(i.split(" "))
-    #print(q)
     intdq = palavrasD.intersection(palavrasQ)
-    #print(palavrasQ)
-    #print()
-    #print(len(intdq))
-    #exit()
-    if (len(intdq)/len(palavrasQ)) > 0.4:
-        return True
-    else:
-        return False
 
-def buscar(q):
-    resultados = []
-    for i in enumerate(indice):
-        if comparar(q[0],i[1]):
-            resultados.append(i[0])
-    return resultados
+    return (len(intdq)/len(palavrasQ))  
+
+def buscar(q, d):
+    for i in indice:
+        if i in d:
+            if d[i] < comparar(i,q):
+                d[i] = comparar(i,q)
+        else:
+            d[i] = comparar(i,q)
+    return d
 
 def rankear(resultados):
+    return resultados[max(resultados,key=resultados.get)]
 
-    pass
 
 indice = list()
 
@@ -66,20 +60,24 @@ qry = lerColecao("/home/aluno/Downloads/BRI-main/cran/docs/cran.qry")
 print("#qry:",len(qry),"\n")
 
 listaResultados = []
+
 for con in qry[1:-1]:
+    di = {}
     #print(con)
     consultaLimpa = removerLixo(con)
     #print(consultaLimpa)
     listaConsulta = extrairExpandir(consultaLimpa)
-    #print(listaConsulta)
-    
-    resultados = buscar(listaConsulta) # resultados de uma pesquisa
+    for sdi in listaConsulta:
+        di = buscar(sdi,di) # resultados de uma pesquisa
 
-    listaResultados.extend(resultados) # resultados de todas as pesquisa
+    #resultados = rankear(resultados)
 
-    rankear(listaResultados)
+    listaResultados.append(di) # resultados de todas as pesquisa
+    print(len(di))
+    print(di.values())
+    break
 
-
+#print(listaResultados)
 #print("docs:",indice[1])
 #consultas = lerColecao("cran.qry")
 #print("#qry:",len(consultas))
