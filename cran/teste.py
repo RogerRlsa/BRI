@@ -62,7 +62,7 @@ qry = lerColecao("/home/aluno/Downloads/BRI-main/cran/docs/cran.qry")
 print("#qry:",len(qry),"\n")
 
 listaResultados = []
-i=0
+#i=0
 for con in qry[1:-1]:
     di = {}
     print("consulta:",con)
@@ -77,8 +77,8 @@ for con in qry[1:-1]:
     listaResultados.append(di) # resultados de todas as pesquisa
     #print(len(di))
     print(resultados)    
-    if i==2: break
-    i+=1
+    #if i==2: break
+    #i+=1
 
 
 #print(listaResultados)
