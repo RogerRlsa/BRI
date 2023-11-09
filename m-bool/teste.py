@@ -13,6 +13,17 @@ def removerLixo(s):
 def addIndice(doc):
     indice.append(doc)
 
+def addIndiceInv(con):
+    termos = list(set(con.split(" ")))
+    for doc in enumerate(indice):
+        termosDoc = set(doc[1])
+        for t in termos:
+            if t in termosDoc:
+                if t not in indiceInv:
+                    indiceInv[t] = [doc[0]]
+                else:
+                    indiceInv[t].append(doc[0])
+
 def extrairExpandir(texto):
     return [texto]
 
@@ -40,6 +51,7 @@ def rankear(resultados):
 
 
 indice = list()
+indiceInv = dict()
 
 
 #arquivo carn
@@ -50,7 +62,7 @@ antesLixo = timeit.default_timer()
 
 for doc in documentos:
     doc = removerLixo(doc)
-    addIndice(doc)
+    addIndice(doc) #passando de uma lista pra outra (???)
     #print("#ind:",len(indice))
 
 depoisLixo = timeit.default_timer() - antesLixo
